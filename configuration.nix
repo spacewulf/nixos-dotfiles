@@ -129,6 +129,7 @@ services.xserver = {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
+
   environment.shells = with pkgs; [ zsh ];
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 

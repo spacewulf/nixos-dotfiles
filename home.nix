@@ -1,6 +1,17 @@
 { config, pkgs, inputs, lib, ... }:
 
 let 
+orcaWayland = pkgs.symlinkJoin {
+	name = "orca-wayland-fix";
+	paths = [
+		pkgs.orca-slicer
+	];
+	buildInputs = [ pkgs.makeWrapper ];
+	postBuild = ''
+		wrapProgram $out/bin/orca-slicer \
+		--prefix __EGL_VENDOR_LIBRARY_FILENAMES : ${pkgs.mesa}/share/glvnd/egl_vendor.d/50_mesa.json \
+		'';
+};
 freecadWayland = pkgs.symlinkJoin {
 	name = "freecad-wayland-fix";
 	paths = [
@@ -74,16 +85,26 @@ in
 		enableAudioWavelength = true;
 		enableCalendarEvents = true;
 	};
-	programs.git.enable = true;
+	# programs.git.enable = true;
+  programs.git = {
+    enable = true;
+    settings = {
+			user = {
+				name = "spacewulf";
+				email = "kwolterstorff531@gmail.com";
+			};
+			init.defaultBranch = "main";
+    };
+  };
 	home.stateVersion = "25.11";
 	home.packages = with pkgs; [
 		freecadWayland
+		orcaWayland
 			playerctl
 			prmt
 			librewolf
 			cryptsetup
 			ghostty
-			orca-slicer
 			spotify
 			xwayland-satellite
 			ripgrep
