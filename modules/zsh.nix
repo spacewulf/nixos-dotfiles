@@ -23,7 +23,9 @@
 	    HISTFILE=~/.histfile #Autocompletion history setup
 	    HISTSIZE=5000
 	    SAVEHIST=5000
-	    PROMPT='$(prmt --code $? "{path:cyan} {git:purple} {rust:red:s: 🦀} {python:yellow:m: 🐍} {time:dim}\n{ok:green}{fail:red} ")'
+	    PROMPT='$(prmt --code $? "{env::USER}@{env::HOSTNAME} {path:cyan} {git:purple} {rust:red:s: 🦀} {python:yellow:m: 🐍} {time:dim}\n{ok:green}{fail:red} ")'
+	    export HOSTNAME=$(hostname)
+	    export EDITOR=nvim
 
 	    autoload -Uz compinit
 	    compinit
@@ -44,8 +46,8 @@
 	    stl = "systemctl";
 	    ll = "ls -alF";
 	    ".." = "cd ..";
-	    update = "sudo nixos-rebuild switch --flake ~/.config/nix#keesNix";
-	    nrs = "sudo nixos-rebuild switch --flake ~/.config/nix#keesNix";
+	    rebuild = "sudo nixos-rebuild switch --flake ~/.dotfiles#keesNix";
+	    nrs = "sudo nixos-rebuild switch --flake ~/.dotfiles#keesNix";
 	};
 	siteFunctions = {
 	    mkcd = ''

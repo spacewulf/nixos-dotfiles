@@ -2,12 +2,17 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
+let
+  user = "kees";
 
+in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ # Include the server modules you wish to use.
       ./hardware-configuration.nix
+      ./serverModules/tailscale.nix
+      inputs.sops-nix.nixosModules.sops
     ];
 
   # Bootloader.
@@ -23,6 +28,11 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+
+  sops.defaultSopsFile = ./secrets/secrets.yaml;
+  sops.defaultSopsFormat = "yaml";
+  sops.age.keyFile = "/home/${user}/.config/sops/age/keys.txt";
+  sops.secrets.tailscale-preauthkey = { };
 
   # Set your time zone.
   time.timeZone = "America/New_York";

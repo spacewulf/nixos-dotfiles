@@ -25,25 +25,25 @@ freecadWayland = pkgs.symlinkJoin {
 		'';
 };
 theme = "${pkgs.base16-schemes}/share/themes/catpuccin-latte.yaml";
-dotfiles = "${config.home.homeDirectory}/.config/nix/config";
+dotfiles = "${config.home.homeDirectory}/.dotfiles/config";
 create_symlink = path: config.lib.file.mkOutOfStoreSymlink path;
 configs = {
 	qtile = "qtile";
 	niri = "niri";
 	nvim = "nvim";
 	ghostty = "ghostty";
-	# zsh = "zsh";
+# zsh = "zsh";
 };
 in 
 { 
 	imports = [
 		./modules/neovim.nix
-		./modules/zsh.nix
-		./modules/tmux.nix
+			./modules/zsh.nix
+			./modules/tmux.nix
 			inputs.stylix.homeModules.stylix
 			inputs.dms.homeModules.dankMaterialShell.default
 	];
-	# home.file.".config/.zshrc".source = ./config/zsh/.zshrc;
+# home.file.".config/.zshrc".source = ./config/zsh/.zshrc;
 	xdg.configFile = builtins.mapAttrs  (name: subpath: {
 			source = create_symlink "${dotfiles}/${subpath}";
 			recursive = true;
@@ -85,21 +85,21 @@ in
 		enableAudioWavelength = true;
 		enableCalendarEvents = true;
 	};
-	# programs.git.enable = true;
-  programs.git = {
-    enable = true;
-    settings = {
+# programs.git.enable = true;
+	programs.git = {
+		enable = true;
+		settings = {
 			user = {
 				name = "spacewulf";
 				email = "kwolterstorff531@gmail.com";
 			};
 			init.defaultBranch = "main";
-    };
-  };
+		};
+	};
 	home.stateVersion = "25.11";
 	home.packages = with pkgs; [
 		freecadWayland
-		orcaWayland
+			orcaWayland
 			playerctl
 			prmt
 			librewolf
@@ -115,6 +115,8 @@ in
 			cmake
 			unzip
 			legcord
+			ssh-to-age
+			age
 	];
 	programs.bash = {
 		enable = true;
